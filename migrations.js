@@ -1,0 +1,77 @@
+//CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+const { Pool } = require('pg');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL
+});
+
+// pool.connect((err, client, done) => {
+        
+//     if(err) throw err
+// });
+
+// pool.query('BEGIN', (err) => {
+//     console.log(err);
+// });
+
+pool.on('connect', () => {
+    console.log('Banco de dados Conectado');
+});
+
+const createTables = () => {
+
+    const queryGen = `CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+    RETURNS TRIGGER AS $$
+    BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+    CREATE TABLE IF NOT EXISTS cupom(
+        id_cupom UUID primary key not null default uuid_generate_v4(),
+        id_estabelecimento integer null,
+        id_segmento integer null,
+        id_pacote integer null,
+        codigo UUID not null default uuid_generate_v4(),
+        titulo varchar(400) null,
+        descricao text null,
+        regulamento text null,
+        dias_uso integer null,
+        min_pessoas integer null,
+        max_pessoas integer null,
+        validade timestamptz null,
+        created_at timestamptz not null default now(),
+        updated_at timestamptz 
+        );
+        CREATE TRIGGER set_timestamp
+        BEFORE UPDATE ON cupom
+        FOR EACH ROW
+        EXECUTE PROCEDURE trigger_set_timestamp();`;
+        
+        
+        
+        
+        pool.query(queryGen).then((res) => {
+            console.log(res);
+            pool.end();    
+        }).catch((error) => {
+            console.log(error);
+            pool.end();
+        });
+}
+
+// pool.on('remove', () => {
+//     console.log('client removed');
+//     process.exit(0);
+// });
+
+module.exports = {
+    createTables
+};
+
+require('make-runnable');
