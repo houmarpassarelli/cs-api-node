@@ -6,17 +6,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL
+    connectionString: process.env.DATABASE_URL_PG
 });
-
-// pool.connect((err, client, done) => {
-        
-//     if(err) throw err
-// });
-
-// pool.query('BEGIN', (err) => {
-//     console.log(err);
-// });
 
 pool.on('connect', () => {
     console.log('Banco de dados Conectado');
@@ -45,8 +36,8 @@ const createTables = () => {
         min_pessoas integer null,
         max_pessoas integer null,
         validade timestamptz null,
-        created_at timestamptz not null default now(),
-        updated_at timestamptz 
+        created_at timestamp not null default now(),
+        updated_at timestamp 
     );
     CREATE TRIGGER set_timestamp
         BEFORE UPDATE ON cupom
@@ -71,7 +62,7 @@ const createTables = () => {
         id_tag SERIAL primary key,
         titulo varchar(300) null,
         created_at timestamp not null default now(),
-        updated_at timestamp timestamp
+        updated_at timestamp
     );
     CREATE TRIGGER set_timestamp
         BEFORE UPDATE ON tag

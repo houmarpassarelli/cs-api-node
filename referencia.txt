@@ -6,3 +6,5 @@ https://www.djamware.com/post/5b56a6cc80aca707dd4f65a9/nodejs-expressjs-sequeliz
 https://node-postgres.com/features/transactions
 https://x-team.com/blog/automatic-timestamps-with-postgresql/
 https://www.devmedia.com.br/tipos-de-dados-no-postgresql-e-sql-server/23362
+https://medium.com/balta-io/nodejs-async-await-21ca3636252a
+https://pt.stackoverflow.com/questions/213910/javascript-diferenças-entre-import-e-require

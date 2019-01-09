@@ -1,16 +1,27 @@
 'use strict';
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var msgSchema = new Schema({
-   title: {
-      type: String
+
+var db = require('../core/pgConnection');
+
+module.exports = {
+   async findById(){
+      
    },
-   body: {
-      type: String
+   async findAll(){
+      try{
+         var {rows, rowCount} = await db.query('SELECT * FROM cupom');
+         return {rows, rowCount};         
+      }
+      catch(error){
+         return {status: 400, error : error};
+      }
    },
-   Created_date: {
-      type: Date,
-      default: Date.now
+   async create(){
+      
+   },
+   async update(){
+
+   },
+   async delete(){
+
    }
-});
-module.exports = mongoose.model('Messages', msgSchema);
+}
