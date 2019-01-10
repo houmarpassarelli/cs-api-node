@@ -1,6 +1,7 @@
 'use strict';
 
 var db = require('../core/pgConnection');
+var insert = require('../models/generic/InsertModel');
 
 module.exports = {
    async findById(){
@@ -16,7 +17,7 @@ module.exports = {
       }
    },
    async create(){
-      
+      return insert.insert('cupom', '{"titulo":"Cupom Titulo", "id_estabelecimento":"1", "id_pacote":"1"}');
    },
    async update(){
 

@@ -7,7 +7,7 @@ module.exports = (api) => {
    api.route('/cupom')
       .get(cupom.getAll);
    api.route('/cupom2')
-      .get(cupom.teste2);
+      .get(cupom.create);
 }
 
 // module.exports = (app) => {
