@@ -8,6 +8,8 @@ module.exports = (api) => {
       .get(cupom.getAll);
    api.route('/cupom2')
       .get(cupom.create);
+   api.route('/cupom3')
+      .get(cupom.update);
 }
 
 // module.exports = (app) => {

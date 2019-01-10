@@ -10,7 +10,7 @@ const pool = new Pool({
 });
 
 module.exports = {
-  query(string, params){
+  query(string, params = null){
     return new Promise((resolve, reject) => {
       pool.query(string, params)
         .then((res) => {

@@ -12,5 +12,8 @@ module.exports = {
       CupomModel.create().then((response) => {
          res.send(response);
       });
+   },
+   update(req, res){
+      CupomModel.update();
    }
 }

@@ -2,6 +2,7 @@
 
 var db = require('../core/pgConnection');
 var insert = require('../models/generic/InsertModel');
+var update = require('../models/generic/UpdateModel');
 
 module.exports = {
    async findById(){
@@ -21,6 +22,19 @@ module.exports = {
    },
    async update(){
 
+      var dados = {
+         'dados' : {
+            "titulo":"Cupom Titulo", 
+            "id_estabelecimento":"1", 
+            "id_pacote":"1"
+         },
+         'condicoes' : [
+            {"condicao" : "AND", "campo" : "id_cupom"},
+            {"condicao" : "OR", "campo" : "codigo"}
+         ]
+      };
+
+      return update.update(false, 'cupom', dados);
    },
    async delete(){
 
