@@ -1,6 +1,6 @@
 'use strict';
 
-var db = require('../../core/pgConnection');
+const db = require('../../core/pgConnection');
 
 module.exports = {
 
@@ -11,7 +11,7 @@ module.exports = {
         var bind = '';
         var values = [];
 
-        var array = [JSON.parse(data)];
+        var array = [JSON.parse(JSON.stringify(data))];
 
         array.forEach((a) => {
             for(var key in a){

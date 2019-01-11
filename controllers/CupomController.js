@@ -14,6 +14,8 @@ module.exports = {
       });
    },
    update(req, res){
-      CupomModel.update();
+      CupomModel.update().then((response) => {
+         res.send(response);
+      });
    }
 }

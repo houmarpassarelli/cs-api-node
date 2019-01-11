@@ -1,13 +1,16 @@
 'use strict';
 
+const db = require('../../core/pgConnection');
+
 module.exports = {
-    async update(manual = null, table = null, data = null, condition = null){
+    async update(manual = null, table = null, data = null){
         
         var query = null;
         var values = [];
         
         if(manual){
             query = manual;
+            values = null;
         }
         else{
 
@@ -15,11 +18,8 @@ module.exports = {
             var fields = '';
             var dados = [JSON.parse(JSON.stringify(data.dados))];
             var condicoes = [JSON.parse(JSON.stringify(data.condicoes))];
-            // var condicoes = [JSON.parse()];
-
-            // console.log();
-
-            // return;
+            var conditions = '';
+            var conditions_values = [];
 
             dados.forEach((a) => {
                 for(var key in a){
@@ -30,28 +30,24 @@ module.exports = {
 
             condicoes.forEach((a) => {
                 for(var key in a){
-                    console.log(a[key].condicao);
+                    conditions += a[key].condicao + " " + a[key].campo + " " + a[key].comparador + " $" + (count++) + " ";
+                    conditions_values.push(a[key].valor);
                 }
             });
 
-            // data.dados.forEach((a) => {
-            //     console.log(a);
-            // });
+            fields = fields.substring(0, fields.length - 2);
+            conditions = conditions.trim();
 
-            // array.forEach((a) => {
-            //     for(var key in a){
-            //         fields += key + " = $" + (count++) + ", ";
-            //         values.push(a[key]);
-            //     }
-            // });
+            values = values.concat(conditions_values);
 
-            // console.log(fields);
-            // console.log(values);
-            // console.log(count);
+            query = "UPDATE " + table + " SET " + fields + " WHERE " + conditions + " returning *";
+        }
 
-            // query = "UPDATE " + table + " SET " + fields;
-
-            // console.log(query);
+        try{
+            return await db.query(query, values);
+        }
+        catch(error){
+            return error;
         }
     }
 }

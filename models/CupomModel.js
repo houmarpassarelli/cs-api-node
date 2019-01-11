@@ -9,28 +9,29 @@ module.exports = {
       
    },
    async findAll(){
-      try{
-         var {rows, rowCount} = await db.query('SELECT * FROM cupom');
-         return {rows, rowCount};         
-      }
-      catch(error){
-         return {status: 400, error : error};
-      }
+      
    },
    async create(){
-      return insert.insert('cupom', '{"titulo":"Cupom Titulo", "id_estabelecimento":"1", "id_pacote":"1"}');
+
+      var dados = {
+         "titulo":"Cupom Titulo", 
+         "id_estabelecimento":"1", 
+         "id_pacote":"1"
+      }
+
+      return insert.insert('cupom', dados);
    },
    async update(){
 
       var dados = {
          'dados' : {
-            "titulo":"Cupom Titulo", 
-            "id_estabelecimento":"1", 
-            "id_pacote":"1"
+            "titulo":"Cupom Titulo alterado", 
+            "id_estabelecimento":"2", 
+            "id_pacote":"3"
          },
          'condicoes' : [
-            {"condicao" : "AND", "campo" : "id_cupom"},
-            {"condicao" : "OR", "campo" : "codigo"}
+            {"condicao" : "", "comparador" : "=", "campo" : "codigo", "valor" : "6f46406f-e625-4c67-9a4b-86d9127c07fc"},
+            {"condicao" : "AND", "comparador" : "=", "campo" : "id_cupom", "valor" : "4"}
          ]
       };
 
