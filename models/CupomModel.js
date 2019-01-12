@@ -1,17 +1,28 @@
 'use strict';
 
-var db = require('../core/pgConnection');
-var insert = require('../models/generic/InsertModel');
-var update = require('../models/generic/UpdateModel');
+const db = require('../core/pgConnection');
+const insert = require('../models/generic/InsertModel');
+const update = require('../models/generic/UpdateModel');
+const select = require('../models/generic/SelectModel');
+const deletar = require('../models/generic/DeleteModel');
 
 module.exports = {
    async findById(){
       
    },
-   async findAll(){
+   async findAll(req, res){
       
+      var dados = {
+         campos : ["titulo", "codigo", "id_cupom"],
+         condicoes : [
+            {"condicao" : "", "comparador" : "=", "campo" : "codigo", "valor" : "6f46406f-e625-4c67-9a4b-86d9127c07fc"},
+            {"condicao" : "AND", "comparador" : "=", "campo" : "id_cupom", "valor" : "4"}
+         ]
+      }
+
+      select.select(false, 'cupom', dados, res);
    },
-   async create(){
+   async create(req, res){
 
       var dados = {
          "titulo":"Cupom Titulo", 
@@ -19,25 +30,31 @@ module.exports = {
          "id_pacote":"1"
       }
 
-      return insert.insert('cupom', dados);
+      insert.insert('cupom', dados, res);
    },
-   async update(){
+   async update(req, res){
 
       var dados = {
-         'dados' : {
+         dados : {
             "titulo":"Cupom Titulo alterado", 
             "id_estabelecimento":"2", 
             "id_pacote":"3"
          },
-         'condicoes' : [
+         condicoes : [
             {"condicao" : "", "comparador" : "=", "campo" : "codigo", "valor" : "6f46406f-e625-4c67-9a4b-86d9127c07fc"},
             {"condicao" : "AND", "comparador" : "=", "campo" : "id_cupom", "valor" : "4"}
          ]
       };
 
-      return update.update(false, 'cupom', dados);
+      update.update(false, 'cupom', dados, res);
    },
-   async delete(){
+   async delete(req, res){
+      var dados = {
+         condicoes : [
+            {"condicao" : "", "comparador" : "=", "campo" : "codigo", "valor" : "0fffa9a5-c51b-4c78-957f-76318375c5cc"}
+         ]
+      }
 
+      deletar.delete('cupom', dados, res);
    }
 }

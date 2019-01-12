@@ -4,16 +4,16 @@ const db = require('../../core/pgConnection');
 
 module.exports = {
 
-    async insert(table, data){
+    async insert(table, data, response){
 
         var count = 1;
         var fields = '';
         var bind = '';
         var values = [];
 
-        var array = [JSON.parse(JSON.stringify(data))];
+        var dados = [JSON.parse(JSON.stringify(data))];
 
-        array.forEach((a) => {
+        dados.forEach((a) => {
             for(var key in a){
                 fields += key + ", ";
                 bind += "$" + (count++) + ", ";
@@ -27,11 +27,11 @@ module.exports = {
         var query = "INSERT INTO " + table + "(" + fields.trim() + ") VALUES(" + bind.trim() + ") returning *";
         
         try{
-            var { rows } = await db.query(query, values);
-            return rows;
+            var { rows, rowCount } = await db.query(query, values);
+            response.status(200).send({rows, rowCount});
         }
         catch(error){
-            return error;
+            response.status(400).send(error)
         }
     }
 }

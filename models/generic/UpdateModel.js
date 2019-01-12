@@ -3,7 +3,7 @@
 const db = require('../../core/pgConnection');
 
 module.exports = {
-    async update(manual = null, table = null, data = null){
+    async update(manual = null, table = null, data = null, response){
         
         var query = null;
         var values = [];
@@ -44,10 +44,11 @@ module.exports = {
         }
 
         try{
-            return await db.query(query, values);
+            var {rows, rowCount} = await db.query(query, values);
+            response.status(200).send({rows, rowCount});
         }
         catch(error){
-            return error;
+            response.status(400).send(error);
         }
     }
 }
