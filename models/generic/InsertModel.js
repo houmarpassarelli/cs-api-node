@@ -15,8 +15,10 @@ module.exports = {
 
         dados.forEach((a) => {
             for(var key in a){
-                fields += key + ", ";
-                bind += "$" + (count++) + ", ";
+                
+                fields += `${key}, `;
+                bind += `$${(count++)}, `;
+
                 values.push(a[key]);
             }
         });
@@ -24,7 +26,7 @@ module.exports = {
         fields = fields.substring(0, fields.length - 2);
         bind = bind.substring(0, bind.length - 2);
 
-        var query = "INSERT INTO " + table + "(" + fields.trim() + ") VALUES(" + bind.trim() + ") returning *";
+        var query = `INSERT INTO ${table} (${fields.trim()}) VALUES(${bind.trim()}) returning *`;
         
         try{
             var { rows, rowCount } = await db.query(query, values);

@@ -40,22 +40,22 @@ module.exports = {
 
                     condicoes.forEach((a) => {
                         for(var key in a){
-                            conditions += a[key].condicao + " " + a[key].campo + " " + a[key].comparador + " $" + (count++) + " ";                            
+                            conditions += `${a[key].condicao} ${a[key].campo} ${a[key].comparador} $${(count++)} `;                            
                             values.push(a[key].valor);
                         }
                     });
 
                     conditions = conditions.trim();
 
-                    query = "SELECT " + fields + " FROM " + table + " WHERE " + conditions;                    
-                    
+                    query = `SELECT ${fields} FROM ${table} WHERE ${conditions}`;                    
+                    console.log(query);
                 }else{
-                    query = "SELECT " + fields + " FROM " + table;
+                    query = `SELECT ${fields} FROM ${table}`;
                     values = null;
                 }
             }
             else{
-                query = "SELECT * FROM " + table;
+                query = `SELECT * FROM ${table}`;
                 values = null;
             }
         }

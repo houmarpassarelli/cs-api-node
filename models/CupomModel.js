@@ -15,8 +15,8 @@ module.exports = {
       var dados = {
          campos : ["titulo", "codigo", "id_cupom"],
          condicoes : [
-            {"condicao" : "", "comparador" : "=", "campo" : "codigo", "valor" : "6f46406f-e625-4c67-9a4b-86d9127c07fc"},
-            {"condicao" : "AND", "comparador" : "=", "campo" : "id_cupom", "valor" : "4"}
+            {"condicao" : "", "comparador" : "=", "campo" : "codigo", "valor" : "c443bb7b-766e-44c9-a2de-633009c5eb6a"},
+            {"condicao" : "AND", "comparador" : "=", "campo" : "id_cupom", "valor" : "8"}
          ]
       }
 

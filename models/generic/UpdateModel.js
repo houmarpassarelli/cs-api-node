@@ -23,14 +23,14 @@ module.exports = {
 
             dados.forEach((a) => {
                 for(var key in a){
-                    fields += key + " = $" + (count++) + ", ";
+                    fields += `${key} = $${(count++)}, `;
                     values.push(a[key]);
                 }
             });
 
             condicoes.forEach((a) => {
                 for(var key in a){
-                    conditions += a[key].condicao + " " + a[key].campo + " " + a[key].comparador + " $" + (count++) + " ";
+                    conditions += `${a[key].condicao} ${a[key].campo} ${a[key].comparador} $${(count++)} `;
                     conditions_values.push(a[key].valor);
                 }
             });
@@ -40,7 +40,7 @@ module.exports = {
 
             values = values.concat(conditions_values);
 
-            query = "UPDATE " + table + " SET " + fields + " WHERE " + conditions + " returning *";
+            query = `UPDATE ${table} SET ${fields} WHERE ${conditions} returning *`;
         }
 
         try{

@@ -13,14 +13,14 @@ module.exports = {
 
         condicoes.forEach((a) => {
             for(var key in a){
-                conditions += a[key].condicao + " " + a[key].campo + " " + a[key].comparador + " $" + (count++) + " ";                            
+                conditions += `${a[key].condicao} ${a[key].campo} ${a[key].comparador} $${(count++)} `;                            
                 values.push(a[key].valor);
             }
         });
 
         conditions = conditions.trim();
 
-        query = "DELETE FROM " + table + " WHERE " + conditions;
+        query = `DELETE FROM ${table} WHERE ${conditions}`;
 
         try{
             var {rows, rowCount} = await db.query(query, values);
