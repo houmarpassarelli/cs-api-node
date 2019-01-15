@@ -3,23 +3,33 @@
 const db = require('../../core/pgConnection');
 
 module.exports = {
-    async select(manual = null, table = null, data = null, response){
+    /**
+     * Função usando spread
+     * deve-se passar os parametros
+     * conforme descrito
+     * 
+     * @param {boolean|null} manual 
+     * @param {string} table 
+     * @param {object} data 
+     */
+    async select(...params){
 
+        var params = params[0];
         var query = null;
         var values = [];
         
-        if(manual){
-            query = manual;
+        if(params.manual){
+            query = params.manual;
             values = null;
         }
         else{
-            if(data){
+            if(params.data){
 
                 var fields = '';
                 
-                if(data.campos){
+                if(params.data.campos){
 
-                    var campos = data.campos;
+                    var campos = params.data.campos;
 
                     for(var key in campos){
                         fields += campos[key] + ", ";
@@ -31,11 +41,11 @@ module.exports = {
                     fields = "*";
                 }
 
-                if(data.condicoes){
+                if(params.data.condicoes){
 
                     var count = 1;
 
-                    var condicoes = [JSON.parse(JSON.stringify(data.condicoes))];
+                    var condicoes = [JSON.parse(JSON.stringify(params.data.condicoes))];
                     var conditions = '';
 
                     condicoes.forEach((a) => {
@@ -47,31 +57,32 @@ module.exports = {
 
                     conditions = conditions.trim();
 
-                    query = `SELECT ${fields} FROM ${table} WHERE ${conditions}`;                    
-                    console.log(query);
+                    query = `SELECT ${fields} FROM ${params.table} WHERE ${conditions}`;                    
+
                 }else{
-                    query = `SELECT ${fields} FROM ${table}`;
+                    query = `SELECT ${fields} FROM ${params.table}`;
                     values = null;
                 }
             }
             else{
-                query = `SELECT * FROM ${table}`;
+                query = `SELECT * FROM ${params.table}`;
                 values = null;
             }
         }
 
         try{
-            if(data.condicoes){
-                var {rows, rowCount} = await db.query(query, values);
-                response.status(200).send({rows, rowCount});
+            if(params.data.condicoes){
+
+                const {rows, rowCount} = await db.query(query, values);
+                return {status : 200, rows, rowCount};
             }
             else{
-                var {rows, rowCount} = await db.query(query, values);
-                response.status(200).send({rows, rowCount});
+                const {rows, rowCount} = await db.query(query, values);
+                return {status : 200, rows, rowCount};
             }
         }
         catch(error){
-            response.status(400).send(error);
+            return {status : 400, error}
         }
     }
 }

@@ -3,7 +3,7 @@
 const db = require('../../core/pgConnection');
 
 module.exports = {
-    async delete(table, data, response){
+    async delete(table, data){
 
         var count = 1;
         var query = null;
@@ -23,11 +23,11 @@ module.exports = {
         query = `DELETE FROM ${table} WHERE ${conditions}`;
 
         try{
-            var {rows, rowCount} = await db.query(query, values);
-            response.status(200).send({rows, rowCount});
+            const {rows, rowCount} = await db.query(query, values);
+            return {status : 200, rows, rowCount};
         }
         catch(error){
-            response.status(400).send(error);
+            return {status: 400, error}
         }
     }
 }

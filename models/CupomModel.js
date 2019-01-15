@@ -10,9 +10,10 @@ module.exports = {
    async findById(){
       
    },
-   async findAll(req, res){
+   async findAll(req){
       
-      var dados = {
+      let table = 'cupom';
+      let data = {
          campos : ["titulo", "codigo", "id_cupom"],
          condicoes : [
             {"condicao" : "", "comparador" : "=", "campo" : "codigo", "valor" : "c443bb7b-766e-44c9-a2de-633009c5eb6a"},
@@ -20,21 +21,22 @@ module.exports = {
          ]
       }
 
-      select.select(false, 'cupom', dados, res);
+      return await select.select({table, data});
    },
-   async create(req, res){
+   async create(req){
 
-      var dados = {
+      let dados = {
          "titulo":"Cupom Titulo", 
          "id_estabelecimento":"1", 
          "id_pacote":"1"
       }
 
-      insert.insert('cupom', dados, res);
+      return await insert.insert('cupom', dados);
    },
-   async update(req, res){
+   async update(req){
 
-      var dados = {
+      let table = 'cupom';
+      let data = {
          dados : {
             "titulo":"Cupom Titulo alterado", 
             "id_estabelecimento":"2", 
@@ -46,15 +48,15 @@ module.exports = {
          ]
       };
 
-      update.update(false, 'cupom', dados, res);
+      return await update.update({table, data});
    },
-   async delete(req, res){
+   async delete(req){
       var dados = {
          condicoes : [
             {"condicao" : "", "comparador" : "=", "campo" : "codigo", "valor" : "0fffa9a5-c51b-4c78-957f-76318375c5cc"}
          ]
       }
 
-      deletar.delete('cupom', dados, res);
+      return await deletar.delete('cupom', dados);
    }
 }

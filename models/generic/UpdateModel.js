@@ -3,21 +3,31 @@
 const db = require('../../core/pgConnection');
 
 module.exports = {
-    async update(manual = null, table = null, data = null, response){
+    /**
+     * Função usando spread
+     * deve-se passar os parametros
+     * conforme descrito
+     * 
+     * @param {null|boolean} manual 
+     * @param {string} table 
+     * @param {object} data 
+     */
+    async update(...params){
         
+        var params = params[0];
         var query = null;
         var values = [];
         
-        if(manual){
-            query = manual;
+        if(params.manual){
+            query = params.manual;
             values = null;
         }
         else{
 
             var count = 1;
             var fields = '';
-            var dados = [JSON.parse(JSON.stringify(data.dados))];
-            var condicoes = [JSON.parse(JSON.stringify(data.condicoes))];
+            var dados = [JSON.parse(JSON.stringify(params.data.dados))];
+            var condicoes = [JSON.parse(JSON.stringify(params.data.condicoes))];
             var conditions = '';
             var conditions_values = [];
 
@@ -40,15 +50,15 @@ module.exports = {
 
             values = values.concat(conditions_values);
 
-            query = `UPDATE ${table} SET ${fields} WHERE ${conditions} returning *`;
+            query = `UPDATE ${params.table} SET ${fields} WHERE ${conditions} returning *`;
         }
 
         try{
-            var {rows, rowCount} = await db.query(query, values);
-            response.status(200).send({rows, rowCount});
+            const {rows, rowCount} = await db.query(query, values);
+            return {status : 200, rows, rowCount};
         }
         catch(error){
-            response.status(400).send(error);
+            return { status : 400, error};
         }
     }
 }

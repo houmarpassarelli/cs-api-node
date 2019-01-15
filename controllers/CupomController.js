@@ -4,19 +4,17 @@ const CupomModel = require('../models/CupomModel');
 const QRCode = require('qrcode');
 
 module.exports = {
-   getAll(req, res){
-      CupomModel.findAll(req, res);
+   async getAll(req){
+      return await CupomModel.findAll(req);
    },
-   create(req, res){
-      CupomModel.create(req, res);
+   async create(req){
+      return await CupomModel.create(req);
    },
-   update(req, res){
-      CupomModel.update().then((response) => {
-         res.send(response);
-      });
+   async update(req){
+      return await CupomModel.update(req);
    },
-   delete(req, res){
-      CupomModel.delete(req, res);
+   async delete(req){
+      return await CupomModel.delete(req);
    },
    qrCode(){
       QRCode.toDataURL('I am a pony!', function (err, url) {
