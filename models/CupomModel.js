@@ -1,6 +1,5 @@
 'use strict';
 
-const db = require('../core/pgConnection');
 const insert = require('../models/generic/InsertModel');
 const update = require('../models/generic/UpdateModel');
 const select = require('../models/generic/SelectModel');

@@ -4,6 +4,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 //Rotas
+var Teste = require('./routes/Teste');
 var Cupom = require('./routes/CupomRoute');
 
 var api = express();
@@ -23,6 +24,7 @@ var allowCors = (req, res, next) => {
 api.route('/').get((req, res) => { res.json({'hello': 'teste'})})
 
 //Instancias das Rotas
+Teste(api);
 Cupom(api);
 
 
