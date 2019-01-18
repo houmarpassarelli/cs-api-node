@@ -27,7 +27,7 @@ module.exports = {
 
                 var fields = '';
                 
-                if(params.data.campos){
+                if(params.data.campos && params.data.campos.length > 0){
 
                     var campos = params.data.campos;
 
@@ -41,7 +41,7 @@ module.exports = {
                     fields = "*";
                 }
 
-                if(params.data.condicoes){
+                if(params.data.condicoes && params.data.condicoes.length > 0){
 
                     var count = 1;
 
@@ -68,18 +68,25 @@ module.exports = {
                 query = `SELECT * FROM ${params.table}`;
                 values = null;
             }
+
+            if(params.data.limites && params.data.limites.length > 0){
+
+                var limites = [JSON.parse(JSON.stringify(params.data.limites))];
+                var limits = '';
+
+                limites.forEach((a) => {
+                    for(var key in a){
+                        limits += ` ${a[key].termo} ${a[key].valor} `
+                    }
+                });
+
+                query += limits
+            }
         }
 
         try{
-            if(params.data.condicoes){
-
-                const {rows, rowCount} = await db.query(query, values);
-                return {status : 200, rows, rowCount};
-            }
-            else{
-                const {rows, rowCount} = await db.query(query, values);
-                return {status : 200, rows, rowCount};
-            }
+            const {rows, rowCount} = await db.query(query, values);
+            return {status : 200, rows, rowCount};
         }
         catch(error){
             return {status : 400, error}

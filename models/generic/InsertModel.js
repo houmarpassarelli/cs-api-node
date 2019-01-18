@@ -1,6 +1,7 @@
 'use strict';
 
 const db = require('../../core/pgConnection');
+const mongoModel = require('../generic/InsertMongoModel');
 
 module.exports = {
 
@@ -27,9 +28,19 @@ module.exports = {
         bind = bind.substring(0, bind.length - 2);
 
         var query = `INSERT INTO ${table} (${fields.trim()}) VALUES(${bind.trim()}) returning *`;
+
+        var data_log = Object.assign({
+            date : new Date(),
+            query
+        }, {values : data});
         
         try{
             const { rows, rowCount } = await db.query(query, values);
+
+            if(rowCount){
+                mongoModel.insert('insert', data_log);
+            }
+
             return { status : 200, rows, rowCount };
         }
         catch(error){

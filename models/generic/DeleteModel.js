@@ -1,6 +1,7 @@
 'use strict';
 
 const db = require('../../core/pgConnection');
+const mongoModel = require('../generic/InsertMongoModel');
 
 module.exports = {
     async delete(table, data){
@@ -22,8 +23,18 @@ module.exports = {
 
         query = `DELETE FROM ${table} WHERE ${conditions}`;
 
+        var data_log = Object.assign({
+            date : new Date(),
+            query
+        }, {conditions_values : values});
+
         try{
             const {rows, rowCount} = await db.query(query, values);
+
+            if(rowCount){
+                mongoModel.insert('delete', data_log);
+            }
+
             return {status : 200, rows, rowCount};
         }
         catch(error){

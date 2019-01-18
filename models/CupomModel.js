@@ -15,9 +15,10 @@ module.exports = {
       let data = {
          campos : ["titulo", "codigo", "id_cupom"],
          condicoes : [
-            {"condicao" : "", "comparador" : "=", "campo" : "codigo", "valor" : "c443bb7b-766e-44c9-a2de-633009c5eb6a"},
-            {"condicao" : "AND", "comparador" : "=", "campo" : "id_cupom", "valor" : "8"}
-         ]
+            {condicao : "", comparador : "=", campo : "codigo", valor : "b7ba379b-8907-48c9-8127-fddf9661c95f"},
+            {condicao : "AND", comparador : "=", campo : "id_cupom", valor : "10"}
+         ],
+         limites : []
       }
 
       return await select.select({table, data});
@@ -42,8 +43,8 @@ module.exports = {
             "id_pacote":"3"
          },
          condicoes : [
-            {"condicao" : "", "comparador" : "=", "campo" : "codigo", "valor" : "6f46406f-e625-4c67-9a4b-86d9127c07fc"},
-            {"condicao" : "AND", "comparador" : "=", "campo" : "id_cupom", "valor" : "4"}
+            {"condicao" : "", "comparador" : "=", "campo" : "codigo", "valor" : "1fe251f5-a8a5-42a4-bd3c-8ef716e26e33"},
+            {"condicao" : "AND", "comparador" : "=", "campo" : "id_cupom", "valor" : "9"}
          ]
       };
 
@@ -52,7 +53,7 @@ module.exports = {
    async delete(req){
       var dados = {
          condicoes : [
-            {"condicao" : "", "comparador" : "=", "campo" : "codigo", "valor" : "0fffa9a5-c51b-4c78-957f-76318375c5cc"}
+            {"condicao" : "", "comparador" : "=", "campo" : "codigo", "valor" : "1fe251f5-a8a5-42a4-bd3c-8ef716e26e33"}
          ]
       }
 
