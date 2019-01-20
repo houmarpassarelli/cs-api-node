@@ -29,11 +29,17 @@ module.exports = {
                 
                 if(params.data.campos && params.data.campos.length > 0){
 
-                    var campos = params.data.campos;
+                    var campos = [JSON.parse(JSON.stringify(params.data.campos))];
 
-                    for(var key in campos){
-                        fields += campos[key] + ", ";
-                    }
+                    campos.forEach((a) => {
+                        for(var key in a){
+                            if(a[key].alias && a[key].alias != ''){
+                                fields += `${a[key].campo} AS ${a[key].alias}, `; 
+                            }else{
+                                fields += `${a[key].campo}, `;
+                            }
+                        }
+                    });
 
                     fields = fields.substr(0, fields.length -2);
                 }
@@ -50,7 +56,20 @@ module.exports = {
 
                     condicoes.forEach((a) => {
                         for(var key in a){
-                            conditions += `${a[key].condicao} ${a[key].campo} ${a[key].comparador} $${(count++)} `;                            
+
+                            if((a[key].operador == 'LIKE' || a[key].operador == 'like') ||
+                                (a[key].operador == 'ILIKE' || a[key].operador == 'ilike') ||
+                                (a[key].operador == 'NOT LIKE' || a[key].operador == 'not like') ||
+                                (a[key].operador == 'NOT ILIKE' || a[key].operador == 'not ilike') ||
+                                (a[key].operador == 'IN' || a[key].operador == 'in') ||
+                                (a[key].operador == 'NOT IN' || a[key].operador == 'not in'))
+                            {
+                                conditions += `${a[key].campo} ${a[key].operador} $${(count++)} `;
+                            }
+                            else{
+                                conditions += `${a[key].operador} ${a[key].campo} ${a[key].comparador} $${(count++)} `;
+                            }
+
                             values.push(a[key].valor);
                         }
                     });
@@ -58,7 +77,7 @@ module.exports = {
                     conditions = conditions.trim();
 
                     query = `SELECT ${fields} FROM ${params.table} WHERE ${conditions}`;                    
-
+                    
                 }else{
                     query = `SELECT ${fields} FROM ${params.table}`;
                     values = null;
@@ -69,6 +88,20 @@ module.exports = {
                 values = null;
             }
 
+            if(params.data.ordenacao && params.data.ordenacao.length){
+
+                var ordenacao = [JSON.parse(JSON.stringify(params.data.ordenacao))];
+                var order = '';
+
+                ordenacao.forEach((a) => {
+                    for(var key in a){
+                        order += ` ${a[key].termo} ${a[key].valor} `;
+                    }
+                });
+
+                query += order
+            }
+
             if(params.data.limites && params.data.limites.length > 0){
 
                 var limites = [JSON.parse(JSON.stringify(params.data.limites))];
@@ -76,14 +109,14 @@ module.exports = {
 
                 limites.forEach((a) => {
                     for(var key in a){
-                        limits += ` ${a[key].termo} ${a[key].valor} `
+                        limits += `${a[key].termo} ${a[key].valor} `
                     }
                 });
 
                 query += limits
             }
         }
-
+       
         try{
             const {rows, rowCount} = await db.query(query, values);
             return {status : 200, rows, rowCount};

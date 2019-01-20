@@ -13,12 +13,17 @@ module.exports = {
       
       let table = 'cupom';
       let data = {
-         campos : ["titulo", "codigo", "id_cupom"],
-         condicoes : [
-            {condicao : "", comparador : "=", campo : "codigo", valor : "b7ba379b-8907-48c9-8127-fddf9661c95f"},
-            {condicao : "AND", comparador : "=", campo : "id_cupom", valor : "10"}
+         campos : [
+            {campo : "titulo", alias : "title"},
+            {campo : "codigo"},
+            {campo : "id_cupom"}
          ],
-         limites : []
+         condicoes : [
+            {operador : "LIKE", campo : "titulo", valor : "%Cupom%"},
+            {operador : "AND", comparador : "=", campo : "id_cupom", valor : 11}
+         ],
+         limites : [],
+         ordenacao : []
       }
 
       return await select.select({table, data});
