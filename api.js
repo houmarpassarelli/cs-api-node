@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 //Rotas
 var Teste = require('./routes/Teste');
 var Cupom = require('./routes/CupomRoute');
+var Segmento = require('./routes/SegmentoRoute');
 
 var api = express();
 
@@ -21,13 +22,6 @@ var allowCors = (req, res, next) => {
 
 // api.get('/', () => {});
 
-api.route('/').get((req, res) => { res.json({'hello': 'teste'})})
-
-//Instancias das Rotas
-Teste(api);
-Cupom(api);
-
-
 api.use(allowCors);
 
 api.use(bodyParser.json());
@@ -35,6 +29,13 @@ api.use(bodyParser.json());
 api.use(bodyParser.urlencoded({
     extended : true
 }));
+
+api.route('/').get((req, res) => { res.json({'hello': 'teste'})})
+
+//Instancias das Rotas
+Teste(api);
+Cupom(api);
+Segmento(api);
 
 api.listen(8080, () => {
     console.log('Servidor iniciado!');

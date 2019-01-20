@@ -67,6 +67,15 @@ const createTables = () => {
     CREATE TRIGGER set_timestamp
         BEFORE UPDATE ON tag
         FOR EACH ROW
+    EXECUTE PROCEDURE trigger_set_timestamp();
+    CREATE TABLE IF NOT EXISTS segmento(
+        id_segmento SERIAL primary key,
+        titulo varchar(30) null,
+        ativo char(1) default 'S'
+    );
+    CREATE TRIGGER set_timestamp
+        BEFORE UPDATE ON segmento
+        FOR EACH ROW
     EXECUTE PROCEDURE trigger_set_timestamp();`;
         
         
@@ -79,13 +88,30 @@ const createTables = () => {
         });
 }
 
+const dropTriggers = () => {
+    
+    const queryGen = `DROP TRIGGER IF EXISTS set_timestamp ON cupom;
+                        DROP TRIGGER IF EXISTS set_timestamp ON usuario;
+                        DROP TRIGGER IF EXISTS set_timestamp ON tag;
+                        DROP TRIGGER IF EXISTS set_timestamp ON segmento;`;
+
+    pool.query(queryGen).then((res) => {
+        console.log(res);
+        pool.end();    
+    }).catch((error) => {
+        console.log(error);
+        pool.end();
+    });
+}
+
 // pool.on('remove', () => {
 //     console.log('client removed');
 //     process.exit(0);
 // });
 
 module.exports = {
-    createTables
+    createTables,
+    dropTriggers
 };
 
 require('make-runnable');
