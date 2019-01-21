@@ -88,7 +88,7 @@ module.exports = {
                 values = null;
             }
 
-            if(params.data.ordenacao && params.data.ordenacao.length){
+            if(params.data && params.data.ordenacao && params.data.ordenacao.length > 0){
 
                 var ordenacao = [JSON.parse(JSON.stringify(params.data.ordenacao))];
                 var order = '';
@@ -102,7 +102,7 @@ module.exports = {
                 query += order
             }
 
-            if(params.data.limites && params.data.limites.length > 0){
+            if(params.data && params.data.limites && params.data.limites.length > 0){
 
                 var limites = [JSON.parse(JSON.stringify(params.data.limites))];
                 var limits = '';
@@ -120,7 +120,7 @@ module.exports = {
         try{
             var {rows, rowCount } = await db.query(query, values);
 
-            if(params.data.excluir && params.data.excluir.length > 0){
+            if(params.data && params.data.excluir && params.data.excluir.length > 0){
 
                 var excluded = excludeField(rows, params.data.excluir);
 
