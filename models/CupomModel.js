@@ -13,15 +13,8 @@ module.exports = {
       
       let table = 'cupom';
       let data = {
-         campos : [
-            {campo : "titulo", alias : "title"},
-            {campo : "codigo"},
-            {campo : "id_cupom"}
-         ],
-         condicoes : [
-            {operador : "LIKE", campo : "titulo", valor : "%Cupom%"},
-            {operador : "AND", comparador : "=", campo : "id_cupom", valor : 11}
-         ],
+         excluir : ['id_cupom', 'id_estabelecimento', 'id_segmento', 'id_pacote'],
+         condicoes : [],
          limites : [],
          ordenacao : []
       }

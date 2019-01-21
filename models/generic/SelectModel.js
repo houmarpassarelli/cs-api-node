@@ -118,11 +118,36 @@ module.exports = {
         }
        
         try{
-            const {rows, rowCount} = await db.query(query, values);
-            return {status : 200, rows, rowCount};
+            var {rows, rowCount } = await db.query(query, values);
+
+            if(params.data.excluir && params.data.excluir.length > 0){
+
+                var excluded = excludeField(rows, params.data.excluir);
+
+                return {status : 200, excluded, rowCount};
+            }else{
+                return {status : 200, rows, rowCount};
+            }
+
         }
         catch(error){
             return {status : 400, error}
         }
     }
+}
+
+function excludeField(data, fields){
+
+    var resultado = [];
+
+    for(var key in data){
+        
+        for(var item in fields){            
+            delete data[key][fields[item]];
+        }
+
+        resultado.push(data[key]);
+    }
+
+    return resultado;
 }
